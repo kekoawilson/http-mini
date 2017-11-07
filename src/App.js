@@ -30,8 +30,12 @@ class App extends Component {
   }
 
   getVehicles() {
-    // axios (GET)
-    // setState with response -> vehiclesToDisplay
+    let promise = axios.get('https://joes-autos.herokuapp.com/api/vehicles')
+    promise.then(res => {
+      this.setState({
+        vehiclesToDisplay: res.data
+      })
+    })
   }
 
   getPotentialBuyers() {
@@ -40,8 +44,12 @@ class App extends Component {
   }
 
   sellCar(id) {
-    // axios (DELETE)
-    // setState with response -> vehiclesToDisplay
+    let promise = axios.delete('https://joes-autos.herokuapp.com/api/vehicles/' + id)
+    promise.then(res => {
+      this.setState({
+        vehiclesToDisplay: res.data.vehicles
+      })
+    })
   }
 
   filterByMake() {
@@ -56,9 +64,13 @@ class App extends Component {
     // setState with response -> vehiclesToDisplay
   }
 
-  updatePrice(priceChange) {
-    // axios (PUT)
-    // setState with response -> vehiclesToDisplay
+  updatePrice(priceChange, id) {
+    let promise = axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
+    promise.then(res => {
+      this.setState({
+        vehiclesToDisplay: res.data.vehicles
+      })
+    })
   }
 
   addCar(){
@@ -69,8 +81,12 @@ class App extends Component {
     year: this.refs.year.value,
     price: this.refs.price.value
   }  
-  // axios (POST)
-  // setState with response -> vehiclesToDisplay
+let promise = axios.post('https://joes-autos.herokuapp.com/api/vehicles', newCar)
+  promise.then(res => {
+    this.setState({
+      vehiclesToDisplay: res.data.vehicles
+    })
+  })
 }
 
 addBuyer() {
@@ -126,11 +142,11 @@ resetData(dataToReset) {
           <p>Price: { v.price }</p>
           <button
             className='btn btn-sp'
-            onClick={ () => this.updatePrice('up') }
+            onClick={ () => this.updatePrice('up', v.id) }
             >Increase Price</button>
           <button
             className='btn btn-sp'
-            onClick={ () => this.updatePrice('down') }
+            onClick={ () => this.updatePrice('down', v.id) }
             >Decrease Price</button>  
           <button 
             className='btn btn-sp'
